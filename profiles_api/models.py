@@ -6,15 +6,13 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
 
-# Create your models here.
-
 class UserProfileManager(BaseUserManager):
-    """Manager for user profile"""
+    """Manager for user profiles"""
 
     def create_user(self, email, name, password=None):
-        """create new user profile"""
+        """Create a new user profile"""
         if not email:
-            raise ValueError("user must have an email")
+            raise ValueError('User must have an email address')
 
         email = self.normalize_email(email)
         user = self.model(email=email, name=name)
@@ -25,7 +23,7 @@ class UserProfileManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, name, password):
-        """Create and save a new supervisor with the given details"""
+        """Create and save a new superuser with given details"""
         user = self.create_user(email, name, password)
 
         user.is_superuser = True
@@ -48,11 +46,11 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
-        """Retrieves full name of user"""
+        """Retrieve full name of user"""
         return self.name
 
     def get_short_name(self):
-        """Retrieves short name of user"""
+        """Retrieve shot name of user"""
         return self.name
 
     def __str__(self):
@@ -64,7 +62,7 @@ class ProfileFeedItem(models.Model):
     """Profile status update"""
     user_profile = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE
     )
     status_text = models.CharField(max_length=255)
     created_on = models.DateTimeField(auto_now_add=True)
